@@ -11,10 +11,13 @@ export default function Dashboard() {
 
   const load = async () => {
     try {
+      console.log('Loading expenses...');
       const data = await getExpenses();
+      console.log('Expenses loaded:', data);
       setExpenses(data);
     } catch (err) {
       console.error('Failed to load expenses:', err);
+      console.error('Error details:', err.response?.data);
     }
   };
 
@@ -23,8 +26,15 @@ export default function Dashboard() {
   }, []);
 
   const handleAdd = async (payload) => {
-    const saved = await createExpense(payload);
-    setExpenses((s) => [saved, ...s]);
+    try {
+      console.log('Adding expense:', payload);
+      const saved = await createExpense(payload);
+      console.log('Expense saved:', saved);
+      setExpenses((s) => [saved, ...s]);
+    } catch (err) {
+      console.error('Failed to add expense:', err);
+      console.error('Error details:', err.response?.data);
+    }
   };
 
   const handleUpdate = async (id, payload) => {
@@ -42,36 +52,36 @@ export default function Dashboard() {
   const today = new Date().toLocaleDateString();
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-[#0f0f0f] via-[#141414] to-[#163319] text-gray-100">
-      <div className="max-w-6xl mx-auto p-6 space-y-10">
+    <div className="w-full text-gray-100">
+      <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <Header />
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-5 flex flex-col items-center shadow-md">
+          <div className="bg-charcoal-500/50 backdrop-blur-sm rounded-2xl p-5 flex flex-col items-center shadow-md border border-gray-600">
             <WalletIcon className="h-10 w-10 text-accent-500 mb-3" />
-            <h3 className="text-lg font-semibold">Total Spent</h3>
+            <h3 className="text-lg font-semibold text-white">Total Spent</h3>
             <p className="text-2xl font-bold mt-2 text-accent-400">₹ {total.toFixed(2)}</p>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-5 flex flex-col items-center shadow-md">
+          <div className="bg-charcoal-500/50 backdrop-blur-sm rounded-2xl p-5 flex flex-col items-center shadow-md border border-gray-600">
             <ArrowTrendingUpIcon className="h-10 w-10 text-brand-400 mb-3" />
-            <h3 className="text-lg font-semibold">Total Expenses</h3>
+            <h3 className="text-lg font-semibold text-white">Total Expenses</h3>
             <p className="text-2xl font-bold mt-2 text-brand-300">{expenses.length}</p>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-5 flex flex-col items-center shadow-md">
-            <ChartPieIcon className="h-10 w-10 text-amber-400 mb-3" />
-            <h3 className="text-lg font-semibold">Last Updated</h3>
-            <p className="text-base font-medium mt-2">{today}</p>
+          <div className="bg-charcoal-500/50 backdrop-blur-sm rounded-2xl p-5 flex flex-col items-center shadow-md border border-gray-600">
+            <ChartPieIcon className="h-10 w-10 text-accent-400 mb-3" />
+            <h3 className="text-lg font-semibold text-white">Last Updated</h3>
+            <p className="text-base font-medium mt-2 text-gray-300">{today}</p>
           </div>
         </div>
 
         {/* Main Section */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Form */}
-          <div className="md:col-span-1 bg-white/10 backdrop-blur-sm p-5 rounded-2xl shadow-md">
+          <div className="lg:col-span-1">
             <ExpenseForm
               onAdd={handleAdd}
               editing={editing}
@@ -81,17 +91,20 @@ export default function Dashboard() {
           </div>
 
           {/* Expense List */}
-          <div className="md:col-span-2 bg-white/10 backdrop-blur-sm p-5 rounded-2xl shadow-md overflow-y-auto">
-            <ExpenseList
-              expenses={expenses}
-              onEdit={(e) => setEditing(e)}
-              onDelete={handleDelete}
-            />
+          <div className="lg:col-span-2 bg-charcoal-500/50 backdrop-blur-sm p-5 rounded-2xl shadow-md border border-gray-600">
+            <h3 className="text-lg font-semibold text-white mb-4">Recent Expenses</h3>
+            <div className="max-h-96 overflow-y-auto">
+              <ExpenseList
+                expenses={expenses}
+                onEdit={(e) => setEditing(e)}
+                onDelete={handleDelete}
+              />
+            </div>
           </div>
         </div>
 
         {/* Footer */}
-        <footer className="text-center pt-10 text-gray-300 text-sm">
+        <footer className="text-center pt-6 text-gray-400 text-sm">
           <p>Built with ❤️ by <span className="font-semibold text-accent-400">Somshubhro Guha</span></p>
           <div className="mt-2 flex justify-center space-x-4">
             <a

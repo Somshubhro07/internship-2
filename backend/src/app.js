@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const authRouter = require('./routes/auth');
 const expensesRouter = require('./routes/expenses');
 const { errorHandler } = require('./middleware/errorHandler');
 
@@ -17,6 +18,7 @@ app.use(cors({
 app.use(express.json());
 
 // API routes
+app.use('/api/auth', authRouter);
 app.use('/api/expenses', expensesRouter);
 
 // Health check

@@ -35,10 +35,10 @@ export default function ExpenseForm({ onAdd, editing, onUpdate, onCancel }) {
   return (
     <form
       onSubmit={submit}
-      className="space-y-4 bg-white/10 backdrop-blur-sm rounded-2xl p-4 shadow-inner"
+      className="space-y-4 bg-charcoal-500/50 backdrop-blur-sm rounded-2xl p-4 shadow-inner border border-gray-600"
     >
       {/* Title */}
-      <h2 className="text-lg font-semibold text-accent-400 mb-2">
+      <h2 className="text-lg font-semibold text-brand-400 mb-2">
         {editing ? 'Edit Expense' : 'Add New Expense'}
       </h2>
 
@@ -53,8 +53,8 @@ export default function ExpenseForm({ onAdd, editing, onUpdate, onCancel }) {
           required
           value={form.amount}
           onChange={(e) => setForm({ ...form, amount: e.target.value })}
-          className="w-full p-2 rounded-md bg-gray-800 text-gray-100 border border-gray-600
-                     focus:ring-2 focus:ring-accent-400 focus:border-accent-400 outline-none"
+          className="w-full p-2 rounded-md bg-charcoal-700 text-gray-100 border border-gray-600
+                     focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition"
           placeholder="Enter amount"
         />
       </div>
@@ -68,8 +68,8 @@ export default function ExpenseForm({ onAdd, editing, onUpdate, onCancel }) {
           type="text"
           value={form.description}
           onChange={(e) => setForm({ ...form, description: e.target.value })}
-          className="w-full p-2 rounded-md bg-gray-800 text-gray-100 border border-gray-600
-                     focus:ring-2 focus:ring-accent-400 focus:border-accent-400 outline-none"
+          className="w-full p-2 rounded-md bg-charcoal-700 text-gray-100 border border-gray-600
+                     focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition"
           placeholder="e.g., Groceries, Electricity Bill"
         />
       </div>
@@ -83,8 +83,8 @@ export default function ExpenseForm({ onAdd, editing, onUpdate, onCancel }) {
           <select
             value={form.category}
             onChange={(e) => setForm({ ...form, category: e.target.value })}
-            className="w-full p-2 rounded-md bg-gray-800 text-gray-100 border border-gray-600
-                       focus:ring-2 focus:ring-accent-400 focus:border-accent-400 outline-none"
+            className="w-full p-2 rounded-md bg-charcoal-700 text-gray-100 border border-gray-600
+                       focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition"
           >
             <option>Food</option>
             <option>Transport</option>
@@ -102,8 +102,8 @@ export default function ExpenseForm({ onAdd, editing, onUpdate, onCancel }) {
             type="date"
             value={form.date}
             onChange={(e) => setForm({ ...form, date: e.target.value })}
-            className="w-full p-2 rounded-md bg-gray-800 text-gray-100 border border-gray-600
-                       focus:ring-2 focus:ring-accent-400 focus:border-accent-400 outline-none"
+            className="w-full p-2 rounded-md bg-charcoal-700 text-gray-100 border border-gray-600
+                       focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition"
           />
         </div>
       </div>
@@ -112,7 +112,7 @@ export default function ExpenseForm({ onAdd, editing, onUpdate, onCancel }) {
       <div className="flex gap-2 pt-2">
         <button
           type="submit"
-          className="flex-1 px-4 py-2 rounded-md bg-accent-500 hover:bg-accent-400 
+          className="flex-1 px-4 py-2 rounded-md bg-brand-500 hover:bg-brand-600 
                      text-white font-medium shadow-md transition"
         >
           {editing ? 'Update' : 'Add Expense'}
@@ -122,8 +122,8 @@ export default function ExpenseForm({ onAdd, editing, onUpdate, onCancel }) {
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600 
-                       text-gray-200 font-medium transition"
+            className="px-4 py-2 rounded-md bg-charcoal-700 hover:bg-charcoal-500 
+                       text-gray-200 font-medium transition border border-gray-600"
           >
             Cancel
           </button>

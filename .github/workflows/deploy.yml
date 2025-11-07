@@ -91,6 +91,11 @@ jobs:
             cd $APP_DIR/backend
             npm ci
 
+            # 5.5️ Create/update .env file with secrets
+            echo "PORT=5000" > .env
+            echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
+            echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+
             # 6️ Start or restart backend with PM2
             if pm2 describe expense-backend > /dev/null; then
               echo "Restarting existing PM2 process..."
