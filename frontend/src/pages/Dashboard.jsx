@@ -95,7 +95,7 @@ export default function Dashboard() {
           <p>Built with ❤️ by <span className="font-semibold text-accent-400">Somshubhro Guha</span></p>
           <div className="mt-2 flex justify-center space-x-4">
             <a
-              href="https://github.com/Somshubhro07"
+              href="https://github.com/Somshubhro07/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-accent-400 transition"
@@ -104,7 +104,7 @@ export default function Dashboard() {
             </a>
             <span>•</span>
             <a
-              href="https://leetcode.com/u/Somshubhro07/"
+              href="https://leetcode.com/u/Somshubhro_7//"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-accent-400 transition"
@@ -113,7 +113,7 @@ export default function Dashboard() {
             </a>
             <span>•</span>
             <a
-              href="https://linkedin.com/in/somshubhro-guha"
+              href="https://www.linkedin.com/in/somshubhro-guha-46b892272/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-accent-400 transition"
