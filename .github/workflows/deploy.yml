@@ -59,23 +59,48 @@ jobs:
             echo "🚀 Starting backend deploy on EC2..."
             APP_DIR=~/expense-backend
 
-            # 1️⃣ Ensure Node.js and npm are installed
+            # 1️ Ensure Node.js and npm are installed
             if ! command -v node &> /dev/null; then
               echo "Node.js not found. Installing..."
               curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
               sudo apt install -y nodejs
             fi
 
-            # 2️⃣ Ensure PM2 is installed
+            # 2️ Ensure PM2 is installed
             if ! command -v pm2 &> /dev/null; then
               echo "PM2 not found. Installing globally..."
               sudo npm install -g pm2
             fi
 
-            # 3️⃣ Ensure Git is installed
+            # 3️ Ensure Git is installed
             if ! command -v git &> /dev/null; then
               echo "Git not found. Installing..."
               sudo apt update && sudo apt install -y git
             fi
 
-            # 4️⃣
+            # 4️ Clone or update repo
+            if [ -d "$APP_DIR" ]; then
+              cd $APP_DIR
+              git fetch origin main
+              git reset --hard origin/main
+            else
+              git clone https://github.com/Somshubhro07/internship-2.git $APP_DIR
+            fi
+
+            # 5️ Install backend dependencies
+            cd $APP_DIR/backend
+            npm ci
+
+            # 6️ Start or restart backend with PM2
+            if pm2 describe expense-backend > /dev/null; then
+              echo "♻️ Restarting existing PM2 process..."
+              pm2 restart expense-backend
+            else
+              echo "Starting backend with PM2..."
+              pm2 start src/server.js --name expense-backend
+            fi
+
+            # 7️ Save PM2 state
+            pm2 save
+
+            echo "Backend deployed & restarted successfully!"
