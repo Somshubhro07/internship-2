@@ -20,8 +20,11 @@ jobs:
 
       - name: Install & Build Frontend
         working-directory: ./frontend
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
         run: |
           npm ci
+          echo "Using API URL: $VITE_API_URL"
           npm run build
 
       - name: Configure AWS Credentials

@@ -4,8 +4,12 @@ const expensesRouter = require('./routes/expenses');
 const { errorHandler } = require('./middleware/errorHandler');
 
 const app = express();
-
-app.use(cors());
+const cors = require('cors');
+app.use(cors({
+    origin: ['https://internship-bucket-som.s3.ap-south-1.amazonaws.com'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
+  }));
+  
 app.use(express.json());
 
 // API routes
