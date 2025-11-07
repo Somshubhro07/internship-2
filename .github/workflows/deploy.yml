@@ -1,0 +1,66 @@
+name: Deploy App to AWS (S3 + EC2)
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  frontend-deploy:
+    name: Deploy Frontend to S3
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install & Build Frontend
+        working-directory: ./frontend
+        run: |
+          npm ci
+          npm run build
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Deploy Frontend to S3
+        run: |
+          aws s3 sync ./frontend/dist s3://${{ secrets.S3_BUCKET }} --delete --acl public-read
+          echo "✅ Frontend deployed to S3!"
+
+  backend-deploy:
+    name: Deploy Backend to EC2
+    needs: frontend-deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v0.1.9
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            set -e
+            APP_DIR=~/expense-backend
+            if [ -d "$APP_DIR" ]; then
+              cd $APP_DIR
+              git pull origin main
+            else
+              git clone https://github.com/<YOUR_GITHUB_USERNAME>/<YOUR_REPO>.git $APP_DIR
+            fi
+            cd $APP_DIR/backend
+            npm ci
+            pm2 restart ecosystem.config.js || pm2 start src/server.js --name expense-backend
+            echo "✅ Backend deployed & restarted successfully"

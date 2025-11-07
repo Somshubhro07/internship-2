@@ -1,0 +1,50 @@
+# ==============================
+# Global ignores
+# ==============================
+node_modules/
+.env
+.DS_Store
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ==============================
+# Build output
+# ==============================
+frontend/dist/
+frontend/.vite/
+backend/dist/
+coverage/
+
+# ==============================
+# Editor / OS specific
+# ==============================
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+
+# ==============================
+# PM2 and process logs
+# ==============================
+pm2.log
+pids
+*.pid
+*.seed
+
+# ==============================
+# AWS / Deployment
+# ==============================
+.pem
+*.pem
+*.key
+infra/*.pem
+infra/*.key
+!.env.example
+
+# ==============================
+# Misc
+# ==============================
+temp/
+tmp/
