@@ -24,7 +24,7 @@ jobs:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
         run: |
           npm ci
-          echo "📡 Using API URL: $VITE_API_URL"
+          echo "Using API URL: $VITE_API_URL"
           npm run build
 
       - name: Configure AWS Credentials
@@ -37,7 +37,7 @@ jobs:
       - name: Deploy Frontend to S3
         run: |
           aws s3 sync ./frontend/dist s3://${{ secrets.S3_BUCKET }} --delete
-          echo "✅ Frontend deployed to S3 successfully!"
+          echo "Frontend deployed to S3 successfully!"
 
   backend-deploy:
     name: Deploy Backend to EC2
@@ -56,7 +56,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             set -e
-            echo "🚀 Starting backend deploy on EC2..."
+            echo "Starting backend deploy on EC2..."
             APP_DIR=~/expense-backend
 
             # 1️ Ensure Node.js and npm are installed
@@ -93,7 +93,7 @@ jobs:
 
             # 6️ Start or restart backend with PM2
             if pm2 describe expense-backend > /dev/null; then
-              echo "♻️ Restarting existing PM2 process..."
+              echo "Restarting existing PM2 process..."
               pm2 restart expense-backend
             else
               echo "Starting backend with PM2..."
