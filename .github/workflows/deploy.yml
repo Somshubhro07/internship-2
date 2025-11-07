@@ -24,7 +24,7 @@ jobs:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
         run: |
           npm ci
-          echo "Using API URL: $VITE_API_URL"
+          echo "📡 Using API URL: $VITE_API_URL"
           npm run build
 
       - name: Configure AWS Credentials
@@ -37,7 +37,7 @@ jobs:
       - name: Deploy Frontend to S3
         run: |
           aws s3 sync ./frontend/dist s3://${{ secrets.S3_BUCKET }} --delete
-          echo "✅ Frontend deployed to S3!"
+          echo "✅ Frontend deployed to S3 successfully!"
 
   backend-deploy:
     name: Deploy Backend to EC2
@@ -56,14 +56,26 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             set -e
+            echo "🚀 Starting backend deploy on EC2..."
             APP_DIR=~/expense-backend
-            if [ -d "$APP_DIR" ]; then
-              cd $APP_DIR
-              git pull origin main
-            else
-              git clone https://github.com/Somshubhro07/internship-2.git $APP_DIR
+
+            # 1️⃣ Ensure Node.js and npm are installed
+            if ! command -v node &> /dev/null; then
+              echo "Node.js not found. Installing..."
+              curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+              sudo apt install -y nodejs
             fi
-            cd $APP_DIR/backend
-            npm ci
-            pm2 restart ecosystem.config.js || pm2 start src/server.js --name expense-backend
-            echo "✅ Backend deployed & restarted successfully"
+
+            # 2️⃣ Ensure PM2 is installed
+            if ! command -v pm2 &> /dev/null; then
+              echo "PM2 not found. Installing globally..."
+              sudo npm install -g pm2
+            fi
+
+            # 3️⃣ Ensure Git is installed
+            if ! command -v git &> /dev/null; then
+              echo "Git not found. Installing..."
+              sudo apt update && sudo apt install -y git
+            fi
+
+            # 4️⃣
