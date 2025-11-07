@@ -36,7 +36,7 @@ jobs:
 
       - name: Deploy Frontend to S3
         run: |
-          aws s3 sync ./frontend/dist s3://${{ secrets.S3_BUCKET }} --delete --acl public-read
+          aws s3 sync ./frontend/dist s3://${{ secrets.S3_BUCKET }} --delete
           echo "✅ Frontend deployed to S3!"
 
   backend-deploy:
@@ -61,7 +61,7 @@ jobs:
               cd $APP_DIR
               git pull origin main
             else
-              git clone https://github.com/<YOUR_GITHUB_USERNAME>/<YOUR_REPO>.git $APP_DIR
+              git clone https://github.com/Somshubhro07/internship-2.git $APP_DIR
             fi
             cd $APP_DIR/backend
             npm ci
